@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+
     <script src="lib/jquery/jquery-2.1.1.min.js"></script>
+    <script src="lib/angularjs/angular.min.js"></script>
     <script src="lib/showdown/showdown.min.js"></script>
 
-    <script>
-        $(function () {
-            var converter = new Showdown.converter();
-            $('#preview').html(converter.makeHtml('Running\n==='))
-        });
-    </script>
+    <link rel="stylesheet" href="lib/codemirror/codemirror.css"/>
+    <script src="lib/codemirror/codemirror.js"></script>
+
+    <script src="app.js"></script>
+    <script src="directives/editor.js"></script>
+    <script src="directives/markdownEditor.js"></script>
 </head>
 <body>
-<div id="preview"></div>
+<markdown-editor></markdown-editor>
 </body>
 </html>
