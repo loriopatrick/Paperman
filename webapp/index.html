@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title></title>
 
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css"/>
+
     <script src="lib/jquery/jquery-2.1.1.min.js"></script>
     <script src="lib/angularjs/angular.min.js"></script>
     <script src="lib/showdown/showdown.min.js"></script>
@@ -14,6 +16,26 @@
     <script src="app.js"></script>
     <script src="directives/editor.js"></script>
     <script src="directives/markdownEditor.js"></script>
+
+    <style>
+        ul, blockquote p, blockquote {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        blockquote {
+            margin: 0;
+            border-left: solid 10px #e1e1e1;
+            padding-left: 15px;
+            font-size: 12px;
+        }
+
+        p {
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
 <markdown-editor></markdown-editor>

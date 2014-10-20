@@ -20,7 +20,7 @@ app.directive('editor', function () {
                         var startLine = change.from.line;
                         var endLine = change.to.line;
                         var update = editor.getRange({line: startLine, ch: 0}, {line: endLine + 1, ch: 0});
-                        scope.onChange(startLine, endLine, update);
+                        scope.onChange(startLine, endLine, update, change.origin == '+input');
                     }
                 });
             });
