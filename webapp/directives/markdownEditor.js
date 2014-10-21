@@ -12,7 +12,7 @@ app.directive('markdownEditor', function () {
                     {
                         type: 'lang',
                         regex: '(~D){2}(.*?)(~D){2}',
-                        replace: function (match, prefix, content, postfix) {
+                        replace: function (match, prefix, content) {
                             if (content in equations) {
                                 return equations[content];
                             }
@@ -27,10 +27,11 @@ app.directive('markdownEditor', function () {
 
             var converter = new Showdown.converter({ extensions: [exFn] });
             $scope.lines = [];
+            $scope.cursor = {line: 0, ch: 0};
 
             $scope.onChange = function (startLine, endLine) {
                 for (var i = startLine; i < Math.min(endLine + 1, $scope.lines.length); ++i) {
-                    prepLine($scope.lines[i - 1], $scope.lines[i], $scope.lines[i + 1]);
+                    prepLine($scope.lines[i - 1], $scope.lines[i], $scope.lines[i + 1], i);
                 }
             };
 
@@ -43,7 +44,7 @@ app.directive('markdownEditor', function () {
                 }
             }
 
-            function prepLine(prevLine, line, nextLine) {
+            function prepLine(prevLine, line, nextLine, index) {
                 line.mId = mId++;
 
                 if (line.text.indexOf('===') == 0 || line.text.indexOf('---') == 0) {
@@ -55,7 +56,7 @@ app.directive('markdownEditor', function () {
                     return;
                 }
 
-                line.html = $sce.trustAsHtml(converter.makeHtml(line.text + getStyleLine(nextLine)));
+                line.html = $sce.trustAsHtml(converter.makeHtml((line.text || '') + (getStyleLine(nextLine) || '')));
             }
 
             var newLine = $sce.trustAsHtml('<br/>');
@@ -65,9 +66,10 @@ app.directive('markdownEditor', function () {
                 return html;
             }
         },
-        template: '<div><editor lines="lines" on-change="onChange" style="width: 50%; float: left;"></editor>' +
+        template: '<div><editor lines="lines" cursor="cursor" on-change="onChange" style="width: 50%; float: left;"></editor>' +
             '<div class="markdown-editor-dir" style="width: 50%; float: left;">' +
-            '<div ng-repeat="line in lines" ng-bind-html="lineMod(line.html)"><br/></div>' +
+            '<div class="line" ng-repeat="line in lines" ' +
+            'ng-class="{\'currentLine\':$index==cursor.line}" ng-bind-html="lineMod(line.html)"><br/></div>' +
             '</div></div>'
     };
 });

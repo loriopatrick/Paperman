@@ -6,21 +6,30 @@ app.directive('editor', function () {
         replace: true,
         scope: {
             'lines': '=',
-            'onChange': '='
+            'onChange': '=',
+            'cursor': '='
         },
         link: function (scope, element) {
             var editor = new CodeMirror(element[0], {
-                value: '',
                 mode: 'markdown',
-                lineNumbers: true
+                lineNumbers: true,
+                theme: 'default'
             });
-
-            var ref = editor.getDoc().children[0].lines;
 
             CodeMirror.on(editor, 'change', function (editor, change) {
                 scope.$apply(function () {
-                    scope.lines = editor.getDoc().children[0].lines;
+                    var doc = editor.getDoc();
+                    scope.lines = doc.children[0].lines;
                     scope.onChange(change.from.line, change.to.line);
+                });
+            });
+
+            CodeMirror.on(editor, 'cursorActivity', function (editor) {
+                scope.$apply(function () {
+                    var doc = editor.getDoc();
+                    var cursor = doc.getCursor();
+                    scope.cursor.line = cursor.line;
+                    scope.cursor.ch = cursor.ch;
                 });
             });
         },
