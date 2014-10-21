@@ -5,23 +5,22 @@ app.directive('editor', function () {
         restrict: 'E',
         replace: true,
         scope: {
+            'lines': '=',
             'onChange': '='
         },
         link: function (scope, element) {
             var editor = new CodeMirror(element[0], {
                 value: '',
-                mode: 'text/x-markdown',
+                mode: 'markdown',
                 lineNumbers: true
             });
 
+            var ref = editor.getDoc().children[0].lines;
+
             CodeMirror.on(editor, 'change', function (editor, change) {
                 scope.$apply(function () {
-                    if (scope.onChange) {
-                        var startLine = change.from.line;
-                        var endLine = change.to.line;
-                        var update = editor.getRange({line: startLine, ch: 0}, {line: endLine + 1, ch: 0});
-                        scope.onChange(startLine, endLine, update, change.origin == '+input');
-                    }
+                    scope.lines = editor.getDoc().children[0].lines;
+                    scope.onChange(change.from.line, change.to.line);
                 });
             });
         },

@@ -100,7 +100,7 @@ Showdown.converter = function(converter_options) {
 //
 
 // Global hashes, used by various utility routines
-var g_urls;
+var g_urls = {};
 var g_titles;
 var g_html_blocks;
 
@@ -147,7 +147,7 @@ this.makeHtml = function(text) {
 	// from other articles when generating a page which contains more than
 	// one article (e.g. an index page that shows the N most recent
 	// articles):
-	g_urls = {};
+//	g_urls = {};
 	g_titles = {};
 	g_html_blocks = [];
 
