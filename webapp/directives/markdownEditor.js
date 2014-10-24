@@ -100,6 +100,13 @@ app.directive('markdownEditor', function ($sce) {
                 return line.html;
             };
         },
+        controller: function ($scope) {
+            $scope.jumpToLine = function (line) {
+//                if(!$scope.$$phase) {
+                    $scope.goToLine = line;
+//                }
+            };
+        },
         templateUrl: 'directives/markdownEditor.html'
     };
 });

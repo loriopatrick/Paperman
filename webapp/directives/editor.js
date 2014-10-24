@@ -7,7 +7,8 @@ app.directive('editor', function ($timeout) {
         scope: {
             'lines': '=',
             'handleLine': '=',
-            'cursor': '='
+            'cursor': '=',
+            'goToLine': '='
         },
         link: function (scope, element) {
             var editor = new CodeMirror(element[0], {
@@ -20,8 +21,16 @@ app.directive('editor', function ($timeout) {
 
             var doc = editor.getDoc();
 
+            scope.$watch('goToLine', function (goToLine) {
+                if (goToLine !== 0 && !goToLine) return;
+                editor.setCursor({line: goToLine, ch: 0});
+                scope.cursor.line = goToLine;
+                scope.cursor.ch = 0;
+                editor.focus();
+            });
+
             CodeMirror.on(editor, 'change', function (editor, change) {
-                scope.$apply(function () {
+                $timeout(function () {
                     var newLines = change.text;
 
                     var startText = scope.lines[change.from.line]? scope.lines[change.from.line].text : null;
@@ -53,7 +62,7 @@ app.directive('editor', function ($timeout) {
             }
 
             CodeMirror.on(editor, 'cursorActivity', function (editor) {
-                scope.$apply(function () {
+                $timeout(function () {
                     var doc = editor.getDoc();
                     var cursor = doc.getCursor();
                     scope.cursor.line = cursor.line;
