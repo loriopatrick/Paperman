@@ -81,9 +81,8 @@ app.directive('markdownEditor', function ($sce) {
                 var indents = bullets.length / 2;
                 var html = '';
                 for (var i = 0; i < indents; ++i) {
-                    var type = i % 2 == 0 ? '<span style="padding-right: 10px;">&#8212;</span>'
+                    html += i % 2 == 0 ? '<span style="padding-right: 10px;">&#8212;</span>'
                         : '<span style="padding: 0 10px 0 5px;">&#8212;</span>';
-                    html += type; // todo: have nicer styling
                 }
                 html += process(text, operators);
                 return html;
