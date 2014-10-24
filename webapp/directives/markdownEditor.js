@@ -8,7 +8,7 @@ app.directive('markdownEditor', function ($sce) {
             scope.lines = [];
             scope.cursor = {line: 0, ch: 0};
             scope.handleLine = function (line) {
-                if (line && line.text.length) {
+                if (line.text.length) {
                     line.html = $sce.trustAsHtml(toHtml(line.text));
                 }
             };
@@ -30,29 +30,21 @@ app.directive('markdownEditor', function ($sce) {
             }
 
             var EQUATION_REGEX = /\$\[([^\]]+)\]/;
-            var equationCache = {};
 
             function mathquill(text) {
-                console.log('mathquill', text);
-                if (text in equationCache) {
-                    return equationCache[text];
-                }
                 var item = $('<span>' + text + '</span>').mathquill();
-                equationCache[text] = item.text().length == 2 ? text : item.prop('outerHTML');
-                return equationCache[text];
+                return item.text().length == 2 ? text : item.prop('outerHTML');
             }
 
             var BOLD_REGEX = /(\*\*)(?!\s)([^(\*\*)]+)\*\*/;
 
             function bold(_, text) {
-                console.log('bold', arguments);
                 return '<strong>' + text + '</strong>';
             }
 
             var BOLD_ITALICS_REGEX = /(\*\*\*)(?!\s)([^(\*\*\*)]+)\*\*\*/;
 
             function boldItalic(_, text) {
-                console.log('bold', arguments);
                 return '<strong style="font-style: italic;">' + text + '</strong>';
             }
 
@@ -106,15 +98,8 @@ app.directive('markdownEditor', function ($sce) {
             scope.blank = function (line) {
                 if (!line.text.length) return newLine;
                 return line.html;
-            }
+            };
         },
         templateUrl: 'directives/markdownEditor.html'
-//        template: '<div><editor lines="lines" cursor="cursor" handle-line="handleLine" style="width: 50%; float: left;"></editor>' +
-//            '<div class="markdown-editor-dir" style="width: 50%; float: left;">' +
-//            '<div class="line" ng-repeat="line in lines" ' +
-//            'ng-class="{\'currentLine\':$index==cursor.line}" ng-bind-html="blank(line)">' +
-//            '{{line.text}}' +
-//            '</div>' +
-//            '</div></div>'
     };
 });

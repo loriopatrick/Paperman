@@ -1,6 +1,6 @@
 var app = app || angular.module('app');
 
-app.directive('editor', function () {
+app.directive('editor', function ($timeout) {
     return {
         restrict: 'E',
         replace: true,
@@ -16,16 +16,41 @@ app.directive('editor', function () {
                 lineWrapping: true
             });
 
+            scope.lines = [];
+
+            var doc = editor.getDoc();
+
             CodeMirror.on(editor, 'change', function (editor, change) {
                 scope.$apply(function () {
-                    var doc = editor.getDoc();
-                    scope.lines = doc.children[0].lines;
+                    var newLines = change.text;
 
-                    for (var i = change.from.line; i < change.to.line + change.text.length; ++i) {
-                        scope.handleLine(scope.lines[i]);
+                    var startText = scope.lines[change.from.line]? scope.lines[change.from.line].text : null;
+                    var endText = scope.lines[change.to.line]? scope.lines[change.to.line].text : null;
+
+                    if (startText) {
+                        newLines[0] = startText.substr(0, change.from.ch) + newLines[0];
                     }
+
+                    if (startText && change.from.line == change.to.line) {
+                        newLines[newLines.length - 1] += startText.substr(change.from.ch + change.removed[0].length);
+                    } else if (endText) {
+                        newLines[newLines.length - 1] += endText.substr(change.to.ch);
+                    }
+
+                    var command = [change.from.line, change.removed.length];
+                    for (var i = 0; i < newLines.length; ++i) {
+                        command.push(buildNewLine(newLines[i]));
+                    }
+
+                    scope.lines.splice.apply(scope.lines, command);
                 });
             });
+
+            function buildNewLine(text) {
+                var newLine = {text: text};
+                scope.handleLine(newLine);
+                return newLine;
+            }
 
             CodeMirror.on(editor, 'cursorActivity', function (editor) {
                 scope.$apply(function () {

@@ -1,7 +1,15 @@
-<div>
-    <editor lines="lines" cursor="cursor" handle-line="handleLine" style="width: 50%; float: left;"></editor>
-    <div class="markdown-editor-dir" style="width: 50%; float: left;">
-        <div class="line" ng-repeat="line in lines" ng-class="{'currentLine':$index==cursor.line}" ng-bind-html="blank(line)">
+<div style="position: absolute; top: 20px; left: 0; right: 0; bottom: 0; overflow: hidden;">
+    <editor
+            lines="lines"
+            cursor="cursor"
+            handle-line="handleLine"
+            style="position: absolute; top: 0; left: 0; width: 50%; bottom: 0; overflow: auto;"></editor>
+    <div class="markdown-editor-dir" style="position: absolute; top: 0; right: 0; width: 50%; bottom: 0; overflow: auto;">
+        <div class="line"
+             ng-dblclick="jumpToLine($index)"
+             ng-repeat="line in lines"
+             ng-class="{'currentLine':$index==cursor.line}"
+             ng-bind-html="blank(line)">
         </div>
     </div>
 </div>
