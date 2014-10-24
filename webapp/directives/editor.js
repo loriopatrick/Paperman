@@ -14,7 +14,8 @@ app.directive('editor', function ($timeout) {
             var editor = new CodeMirror(element[0], {
                 mode: 'markdown',
                 theme: 'default',
-                lineWrapping: true
+                lineWrapping: true,
+                styleActiveLine: true
             });
 
             scope.lines = [];

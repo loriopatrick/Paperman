@@ -6,11 +6,14 @@
             go-to-line="goToLine"
             style="position: absolute; top: 0; left: 0; width: 50%; bottom: 0; overflow: auto;"></editor>
     <div class="markdown-editor-dir" style="position: absolute; top: 0; right: 0; width: 50%; bottom: 0; overflow: auto;">
-        <div class="line"
-             ng-dblclick="jumpToLine($index)"
-             ng-repeat="line in lines"
-             ng-class="{'currentLine':$index==cursor.line}"
-             ng-bind-html="blank(line)">
+        <div style="border-left: solid 1px black;">
+            <div class="line"
+                 ng-dblclick="jumpToLine($index)"
+                 ng-repeat="line in lines"
+                 ng-class="{'currentLine':$index==cursor.line}"
+                 ng-bind-html="blank(line)">
+            </div>
         </div>
+
     </div>
 </div>

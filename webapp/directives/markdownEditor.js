@@ -102,9 +102,7 @@ app.directive('markdownEditor', function ($sce) {
         },
         controller: function ($scope) {
             $scope.jumpToLine = function (line) {
-//                if(!$scope.$$phase) {
-                    $scope.goToLine = line;
-//                }
+                $scope.goToLine = line;
             };
         },
         templateUrl: 'directives/markdownEditor.html'

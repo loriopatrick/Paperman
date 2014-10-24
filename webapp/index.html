@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="lib/codemirror/codemirror.css"/>
     <script src="lib/codemirror/codemirror.js"></script>
+    <script src="lib/codemirror/addon/active-line.js"></script>
 
     <link rel="stylesheet" href="lib/mathquill/mathquill.css"/>
     <script src="lib/mathquill/mathquill.min.js"></script>
@@ -40,7 +41,7 @@
         }
 
         .currentLine {
-            background: #DEFDFF;
+            background: rgb(232, 242, 255);
         }
 
         .line {
@@ -51,6 +52,7 @@
             height: auto;
             border: none;
         }
+
         .CodeMirror-scroll {
             overflow-y: hidden;
             overflow-x: auto;
