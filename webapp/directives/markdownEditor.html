@@ -1,7 +1,7 @@
 <div>
-    <editor on-change="onChange" style="width: 50%; float: left;"></editor>
+    <editor lines="lines" cursor="cursor" handle-line="handleLine" style="width: 50%; float: left;"></editor>
     <div class="markdown-editor-dir" style="width: 50%; float: left;">
-        {{lines}}
-        <div ng-repeat="line in lines">{{line.text}}</div>
+        <div class="line" ng-repeat="line in lines" ng-class="{'currentLine':$index==cursor.line}" ng-bind-html="blank(line)">
+        </div>
     </div>
 </div>

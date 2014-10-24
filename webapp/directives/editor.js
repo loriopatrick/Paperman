@@ -12,8 +12,8 @@ app.directive('editor', function () {
         link: function (scope, element) {
             var editor = new CodeMirror(element[0], {
                 mode: 'markdown',
-                lineNumbers: true,
-                theme: 'default'
+                theme: 'default',
+                lineWrapping: true
             });
 
             CodeMirror.on(editor, 'change', function (editor, change) {

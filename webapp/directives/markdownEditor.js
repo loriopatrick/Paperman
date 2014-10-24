@@ -108,12 +108,13 @@ app.directive('markdownEditor', function ($sce) {
                 return line.html;
             }
         },
-        template: '<div><editor lines="lines" cursor="cursor" handle-line="handleLine" style="width: 50%; float: left;"></editor>' +
-            '<div class="markdown-editor-dir" style="width: 50%; float: left;">' +
-            '<div class="line" ng-repeat="line in lines" ' +
-            'ng-class="{\'currentLine\':$index==cursor.line}" ng-bind-html="blank(line)">' +
-            '{{line.text}}' +
-            '</div>' +
-            '</div></div>'
+        templateUrl: 'directives/markdownEditor.html'
+//        template: '<div><editor lines="lines" cursor="cursor" handle-line="handleLine" style="width: 50%; float: left;"></editor>' +
+//            '<div class="markdown-editor-dir" style="width: 50%; float: left;">' +
+//            '<div class="line" ng-repeat="line in lines" ' +
+//            'ng-class="{\'currentLine\':$index==cursor.line}" ng-bind-html="blank(line)">' +
+//            '{{line.text}}' +
+//            '</div>' +
+//            '</div></div>'
     };
 });
