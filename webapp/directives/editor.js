@@ -6,7 +6,7 @@ app.directive('editor', function () {
         replace: true,
         scope: {
             'lines': '=',
-            'onChange': '=',
+            'handleLine': '=',
             'cursor': '='
         },
         link: function (scope, element) {
@@ -20,7 +20,10 @@ app.directive('editor', function () {
                 scope.$apply(function () {
                     var doc = editor.getDoc();
                     scope.lines = doc.children[0].lines;
-                    scope.onChange(change.from.line, change.to.line);
+
+                    for (var i = change.from.line; i < change.to.line + change.text.length; ++i) {
+                        scope.handleLine(scope.lines[i]);
+                    }
                 });
             });
 
