@@ -29,9 +29,11 @@ app.directive('markdownEditor', function ($sce) {
                 return string;
             }
 
-            var EQUATION_REGEX = /\$\[(.+)\]/;
+            var EQUATION_REGEX = /\$\[([^\]]+)\]/;
             var equationCache = {};
+
             function mathquill(text) {
+                console.log('mathquill', text);
                 if (text in equationCache) {
                     return equationCache[text];
                 }
@@ -40,33 +42,61 @@ app.directive('markdownEditor', function ($sce) {
                 return equationCache[text];
             }
 
-            var BOLD_REGEX = /\*\*(.+)\*\*/;
-            function bold(text) {
+            var BOLD_REGEX = /(\*\*)(?!\s)([^(\*\*)]+)\*\*/;
+
+            function bold(_, text) {
+                console.log('bold', arguments);
                 return '<strong>' + text + '</strong>';
             }
 
-            var ITALICS_REGEX = /\*(.+)\*/;
-            function italic(text) {
+            var BOLD_ITALICS_REGEX = /(\*\*\*)(?!\s)([^(\*\*\*)]+)\*\*\*/;
+
+            function boldItalic(_, text) {
+                console.log('bold', arguments);
+                return '<strong style="font-style: italic;">' + text + '</strong>';
+            }
+
+            var ITALICS_REGEX = /(\*)(?!\s)([^\*]+)\*/;
+
+            function italic(_, text) {
                 return '<span style="font-style: italic;">' + text + '</span>';
             }
 
             var HEADER_REGEX = /^(#+)(.*)/;
+
             function header(header, text) {
                 var tag = 'h' + header.length + '>';
                 return '<' + tag + text + '</' + tag;
             }
 
-            var TAG_REGEX = /\`(.*)\`/;
+            var TAG_REGEX = /\`([^\`]+)\`/;
+
             function tag(text) {
                 return '<span class="label label-primary">' + text + '</span>';
             }
 
+            var BULLET_REGEX = /^(([\*-]\s)+)(.*)/;
+
+            function bullet(bullets, _, text) {
+                var indents = bullets.length / 2;
+                var html = '';
+                for (var i = 0; i < indents; ++i) {
+                    var type = i % 2 == 0 ? '<span style="padding-right: 10px;">&#8212;</span>'
+                        : '<span style="padding: 0 10px 0 5px;">&#8212;</span>';
+                    html += type; // todo: have nicer styling
+                }
+                html += process(text, operators);
+                return html;
+            }
+
             var operators = [
                 [EQUATION_REGEX, mathquill],
+                [BOLD_ITALICS_REGEX, boldItalic],
                 [BOLD_REGEX, bold],
                 [ITALICS_REGEX, italic],
                 [HEADER_REGEX, header],
-                [TAG_REGEX, tag]
+                [TAG_REGEX, tag],
+                [BULLET_REGEX, bullet]
             ];
 
             function toHtml(text) {
