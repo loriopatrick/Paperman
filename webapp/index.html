@@ -51,6 +51,9 @@
         .CodeMirror {
             height: auto;
             border: none;
+            font-size: 14px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.42857143;
         }
 
         .CodeMirror-scroll {
@@ -65,9 +68,21 @@
         .mathquill-rendered-math sup {
             padding-top: 8px;
         }
+
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 34px;
+            background: #f3f3f3;
+            border-bottom: 1px solid black;
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
+<div class="header"></div>
 <markdown-editor></markdown-editor>
 </body>
 </html>
