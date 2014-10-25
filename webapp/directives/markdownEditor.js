@@ -1,10 +1,10 @@
 var app = app || angular.module('app');
 
-app.directive('markdownEditor', function ($sce) {
+app.directive('markdownEditor', function ($sce, $timeout) {
     return {
         restrict: 'E',
         replace: true,
-        link: function (scope) {
+        link: function (scope, element) {
             scope.lines = [];
             scope.cursor = {line: 0, ch: 0};
             scope.handleLine = function (line) {
@@ -12,6 +12,29 @@ app.directive('markdownEditor', function ($sce) {
                     line.html = $sce.trustAsHtml(toHtml(line.text));
                 }
             };
+
+            var $previewLines = $(element.find('.preview-lines')).first();
+
+
+            scope.$watch('cursor', function () {
+                $timeout(function () {
+                    var $currentLine = $previewLines.find('.currentLine');
+                    console.log($currentLine.position().top + $previewLines.scrollTop(), $currentLine.offset());
+                    console.log('is visible', isScrolledIntoView($currentLine));
+                    if (!$currentLine.length || isScrolledIntoView($currentLine)) return;
+                    $previewLines.scrollTop($currentLine.position().top + $previewLines.scrollTop());
+                });
+            }, true);
+
+            function isScrolledIntoView($elem) {
+                var docViewTop = $previewLines.scrollTop();
+                var docViewBottom = docViewTop + $previewLines.height();
+
+                var elemTop = $elem.position().top + $previewLines.scrollTop();
+                var elemBottom = elemTop + $elem.height();
+
+                return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+            }
 
             function process(string, operators) {
                 for (var i = 0; i < operators.length; ++i) {
