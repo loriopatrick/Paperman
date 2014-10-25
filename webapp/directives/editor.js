@@ -24,6 +24,22 @@ app.directive('editor', function ($timeout, $window) {
 
             var doc = editor.getDoc();
 
+            $timeout(function () {
+                var text = $window.localStorage.getItem('text');
+                if (text) {
+                    doc.setValue(text);
+                } else {
+                    doc.setValue('# This is Paper Man.\n\nIt\'s a latex editor with a markdown feel.\n\n' +
+                        'You can write latex $$p(x)=x^2+\\frac{2}{4}$$\nYou can have **bold** *italic* and ' +
+                        '***italic bold*** font.\n\nYou can create lists\n* There are also `labels`.\n* ' +
+                        'Everything is extremely responsive, even for large files .\n* Try this out.\n* * ' +
+                        'Double click me in the right window.\n* * Now double click me in the right window.' +
+                        '\n\nNotice the Download PDF button in the top center.\n\nLet me know what you think,' +
+                        ' my email is **patrick@lorio.me**\n\nEnjoy Paper Man,\nPatrick Lorio.');
+                }
+            }, 100);
+
+
             scope.$watch('save', function (save) {
                 if (!save) return;
                 scope.save = false;

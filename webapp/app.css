@@ -76,3 +76,7 @@ p {
     float: left;
     margin-left: 20px;
 }
+
+.label-primary {
+    background-color: #565656;
+}
