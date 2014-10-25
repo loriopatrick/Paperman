@@ -1,6 +1,6 @@
 var app = app || angular.module('app');
 
-app.directive('editor', function ($timeout, $window) {
+app.directive('editor', function ($timeout, $window, $sce) {
     return {
         restrict: 'E',
         replace: true,
@@ -79,17 +79,32 @@ app.directive('editor', function ($timeout, $window) {
                     }
 
                     var command = [change.from.line, change.removed.length];
+
+
+                    var inEquation = false;
+                    for (var j = 0; j < change.from.line; ++j) {
+                        if (scope.lines[j].text == '$$') {
+                            inEquation = !inEquation;
+                        }
+                    }
+
                     for (var i = 0; i < newLines.length; ++i) {
-                        command.push(buildNewLine(newLines[i]));
+                        if (newLines[i] == '$$') {
+                            inEquation = !inEquation;
+                            command.push({text: '$$', html: $sce.trustAsHtml('')});
+                            continue;
+                        }
+
+                        command.push(buildNewLine(newLines[i], inEquation? 'equation' : 'normal'));
                     }
 
                     scope.lines.splice.apply(scope.lines, command);
                 });
             });
 
-            function buildNewLine(text) {
+            function buildNewLine(text, type) {
                 var newLine = {text: text};
-                scope.handleLine(newLine);
+                scope.handleLine(newLine, type);
                 return newLine;
             }
 

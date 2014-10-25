@@ -12,8 +12,12 @@ app.directive('markdownEditor', function ($sce, $timeout, $http, $window) {
         link: function (scope, element) {
             scope.lines = [];
             scope.cursor = {line: 0, ch: 0};
-            scope.handleLine = function (line) {
+            scope.handleLine = function (line, type) {
                 if (line.text.length) {
+                    if (type == 'equation') {
+                        line.html = $sce.trustAsHtml(mathquill(line.text));
+                        return;
+                    }
                     line.html = $sce.trustAsHtml(toHtml(line.text));
                 }
             };
