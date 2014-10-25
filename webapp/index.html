@@ -26,12 +26,12 @@
             $scope.download = false;
 
             $scope.doSave = function () {
-                if (!confirm('This will replace any other document saved on this device.')) return;
+                if (!confirm('This will override the current save.')) return;
                 $scope.save = true;
             };
 
             $scope.doLoad = function () {
-                if (!confirm('You\'r current work will lost')) return;
+                if (!confirm('Your current work will be lost.')) return;
                 $scope.load = true;
             }
         });
