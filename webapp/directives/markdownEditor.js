@@ -1,9 +1,12 @@
 var app = app || angular.module('app');
 
-app.directive('markdownEditor', function ($sce, $timeout) {
+app.directive('markdownEditor', function ($sce, $timeout, $http) {
     return {
         restrict: 'E',
         replace: true,
+        scope: {
+            'download': '='
+        },
         link: function (scope, element) {
             scope.lines = [];
             scope.cursor = {line: 0, ch: 0};
@@ -14,6 +17,16 @@ app.directive('markdownEditor', function ($sce, $timeout) {
             };
 
             var $previewLines = $(element.find('.preview-lines')).first();
+
+            scope.$watch('download', function (download) {
+                if (!download) return;
+                scope.download = false;
+
+                var html = $previewLines.html();
+                $http.post('/download', {html: html}).success(function () {
+                    console.log(arguments);
+                });
+            }, true);
 
 
             scope.$watch('cursor', function () {
@@ -50,20 +63,20 @@ app.directive('markdownEditor', function ($sce, $timeout) {
                 return string;
             }
 
-            var EQUATION_REGEX = /\$\$([^(\$\$)]+)\$\$/;
+            var EQUATION_REGEX = /\$\$([^\$\$]+)\$\$/;
 
             function mathquill(text) {
                 var item = $('<span>' + text + '</span>').mathquill();
                 return item.text().length == 2 ? text : item.prop('outerHTML');
             }
 
-            var BOLD_REGEX = /(\*\*)(?!\s)([^(\*\*)]+)\*\*/;
+            var BOLD_REGEX = /(\*\*)(?!\s)([^\*\*]+)\*\*/;
 
             function bold(_, text) {
                 return '<strong>' + text + '</strong>';
             }
 
-            var BOLD_ITALICS_REGEX = /(\*\*\*)(?!\s)([^(\*\*\*)]+)\*\*\*/;
+            var BOLD_ITALICS_REGEX = /(\*\*\*)(?!\s)([^\*\*\*]+)\*\*\*/;
 
             function boldItalic(_, text) {
                 return '<strong style="font-style: italic;">' + text + '</strong>';
@@ -117,7 +130,7 @@ app.directive('markdownEditor', function ($sce, $timeout) {
 
             var newLine = $sce.trustAsHtml('<br/>');
             scope.blank = function (line) {
-                if (!line.text.length) return newLine;
+                if (!line.text.trim().length) return newLine;
                 return line.html;
             };
         },

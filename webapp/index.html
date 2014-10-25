@@ -8,7 +8,6 @@
 
     <script src="lib/jquery/jquery-2.1.1.min.js"></script>
     <script src="lib/angularjs/angular.min.js"></script>
-    <script src="lib/showdown/showdown.js"></script>
 
     <link rel="stylesheet" href="lib/codemirror/codemirror.css"/>
     <script src="lib/codemirror/codemirror.js"></script>
@@ -21,68 +20,23 @@
     <script src="directives/editor.js"></script>
     <script src="directives/markdownEditor.js"></script>
 
-    <style>
-        ul, blockquote p, blockquote {
-            margin-top: 0;
-            margin-bottom: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-
-        blockquote {
-            border-left: solid 5px #e1e1e1;
-            margin: 0 0 0 7px;;
-            padding-left: 15px;
-            font-size: 14px;
-        }
-
-        p {
-            margin: 0;
-        }
-
-        .currentLine {
-            background: rgb(232, 242, 255);
-        }
-
-        .line {
-            padding-left: 7px;
-        }
-
-        .CodeMirror {
-            height: auto;
-            border: none;
-            font-size: 14px;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            line-height: 1.42857143;
-        }
-
-        .CodeMirror-scroll {
-            overflow-y: hidden;
-            overflow-x: auto;
-        }
-
-        .mathquill-rendered-math .denominator {
-            width: auto;
-        }
-
-        .mathquill-rendered-math sup {
-            padding-top: 8px;
-        }
-
-        .header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 34px;
-            background: #f3f3f3;
-            border-bottom: 1px solid black;
-            z-index: 999;
-        }
-    </style>
+    <link rel="stylesheet" href="app.css"/>
+    <script>
+        app.controller('AppCtrl', function ($scope) {
+            $scope.download = false;
+        });
+    </script>
 </head>
-<body>
-<div class="header"></div>
-<markdown-editor></markdown-editor>
+<body ng-controller="AppCtrl">
+<div class="header">
+    <div class="half">
+        <div class="title">PAPER MAN</div>
+        <a href="javascript:;"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
+    </div>
+    <div class="half">
+        <a href="javascript:;" ng-click="download=true"><span class="glyphicon glyphicon-save"></span> Download PDF</a>
+    </div>
+</div>
+<markdown-editor download="download"></markdown-editor>
 </body>
 </html>

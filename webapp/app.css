@@ -1,0 +1,78 @@
+
+ul, blockquote p, blockquote {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+blockquote {
+    border-left: solid 5px #e1e1e1;
+    margin: 0 0 0 7px;;
+    padding-left: 15px;
+    font-size: 14px;
+}
+
+p {
+    margin: 0;
+}
+
+.currentLine {
+    background: rgb(232, 242, 255);
+}
+
+.line {
+    padding-left: 7px;
+}
+
+.CodeMirror {
+    height: auto;
+    border: none;
+    font-size: 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.42857143;
+}
+
+.CodeMirror-scroll {
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+.mathquill-rendered-math .denominator {
+    width: auto;
+}
+
+.mathquill-rendered-math sup {
+    padding-top: 8px;
+}
+
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 34px;
+    background: #f3f3f3;
+    border-bottom: 1px solid black;
+    z-index: 999;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 18px;
+    padding: 5px;
+    color: rgb(69, 69, 69);
+    float: left;
+}
+
+.half {
+    width: 50%;
+    float: left;
+}
+
+.header a {
+    text-decoration: none;
+    padding-top: 9px;
+    float: left;
+    margin-left: 20px;
+}
