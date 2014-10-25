@@ -52,7 +52,7 @@ p {
     left: 0;
     right: 0;
     height: 34px;
-    background: #f3f3f3;
+    background: white;
     border-bottom: 1px solid black;
     z-index: 999;
 }

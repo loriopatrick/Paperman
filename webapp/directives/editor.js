@@ -1,6 +1,6 @@
 var app = app || angular.module('app');
 
-app.directive('editor', function ($timeout) {
+app.directive('editor', function ($timeout, $window) {
     return {
         restrict: 'E',
         replace: true,
@@ -8,7 +8,9 @@ app.directive('editor', function ($timeout) {
             'lines': '=',
             'handleLine': '=',
             'cursor': '=',
-            'goToLine': '='
+            'goToLine': '=',
+            'save': '=',
+            'load': '='
         },
         link: function (scope, element) {
             var editor = new CodeMirror(element[0], {
@@ -21,6 +23,19 @@ app.directive('editor', function ($timeout) {
             scope.lines = [];
 
             var doc = editor.getDoc();
+
+            scope.$watch('save', function (save) {
+                if (!save) return;
+                scope.save = false;
+                $window.localStorage.setItem('text', doc.getValue());
+            });
+
+            scope.$watch('load', function (load) {
+                if (!load) return;
+                scope.load = false;
+                var text = $window.localStorage.getItem('text');
+                doc.setValue(text);
+            });
 
             scope.$watch('goToLine', function (goToLine) {
                 if (goToLine !== 0 && !goToLine) return;

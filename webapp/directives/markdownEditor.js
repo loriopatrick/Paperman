@@ -1,11 +1,13 @@
 var app = app || angular.module('app');
 
-app.directive('markdownEditor', function ($sce, $timeout, $http) {
+app.directive('markdownEditor', function ($sce, $timeout, $http, $window) {
     return {
         restrict: 'E',
         replace: true,
         scope: {
-            'download': '='
+            'download': '=',
+            'save': '=',
+            'load': '='
         },
         link: function (scope, element) {
             scope.lines = [];
@@ -23,11 +25,10 @@ app.directive('markdownEditor', function ($sce, $timeout, $http) {
                 scope.download = false;
 
                 var html = $previewLines.html();
-                $http.post('/download', {html: html}).success(function () {
-                    console.log(arguments);
+                $http.post('/download', {html: html}).success(function (url) {
+                    $window.open(url);
                 });
             }, true);
-
 
             scope.$watch('cursor', function () {
                 $timeout(function () {

@@ -24,6 +24,16 @@
     <script>
         app.controller('AppCtrl', function ($scope) {
             $scope.download = false;
+
+            $scope.doSave = function () {
+                if (!confirm('This will replace any other document saved on this device.')) return;
+                $scope.save = true;
+            };
+
+            $scope.doLoad = function () {
+                if (!confirm('You\'r current work will lost')) return;
+                $scope.load = true;
+            }
         });
     </script>
 </head>
@@ -31,12 +41,13 @@
 <div class="header">
     <div class="half">
         <div class="title">PAPER MAN</div>
-        <a href="javascript:;"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
+        <a href="javascript:;" ng-click="doSave()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a>
+        <a href="javascript:;" ng-click="doLoad()"><span class="glyphicon glyphicon-floppy-disk"></span> Load</a>
     </div>
     <div class="half">
         <a href="javascript:;" ng-click="download=true"><span class="glyphicon glyphicon-save"></span> Download PDF</a>
     </div>
 </div>
-<markdown-editor download="download"></markdown-editor>
+<markdown-editor save="save" load="load" download="download"></markdown-editor>
 </body>
 </html>
