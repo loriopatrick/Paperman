@@ -19,8 +19,6 @@ app.directive('markdownEditor', function ($sce, $timeout) {
             scope.$watch('cursor', function () {
                 $timeout(function () {
                     var $currentLine = $previewLines.find('.currentLine');
-                    console.log($currentLine.position().top + $previewLines.scrollTop(), $currentLine.offset());
-                    console.log('is visible', isScrolledIntoView($currentLine));
                     if (!$currentLine.length || isScrolledIntoView($currentLine)) return;
                     $previewLines.scrollTop($currentLine.position().top + $previewLines.scrollTop());
                 });
@@ -52,7 +50,7 @@ app.directive('markdownEditor', function ($sce, $timeout) {
                 return string;
             }
 
-            var EQUATION_REGEX = /\$\[([^\]]+)\]/;
+            var EQUATION_REGEX = /\$\$([^(\$\$)]+)\$\$/;
 
             function mathquill(text) {
                 var item = $('<span>' + text + '</span>').mathquill();
